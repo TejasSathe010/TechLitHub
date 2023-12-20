@@ -9,7 +9,8 @@ module.exports = {
         primary: "#1565D8",
         dark: {
           soft: "#183B56",
-          hard: "#0D2436"
+          hard: "#0D2436",
+          light: "#5A7184"
         }
       },
       fontFamily: {
