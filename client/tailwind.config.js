@@ -1,24 +1,36 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        primary: "#1565D8",
-        dark: {
-          soft: "#183B56",
-          hard: "#0D2436",
-          light: "#5A7184"
-        }
-      },
-      fontFamily: {
-        opensans: ['Open Sans', 'sans-serif'],
-        roboto: ['Roboto', 'sans-serif']
-      }
-    },
-  },
-  plugins: [],
-}
+export default {
+    content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+    theme: {
+        
+        colors: {
+            'white': '#FFFFFF',
+            'black': '#242424',
+            'grey': '#F3F3F3',
+            'dark-grey': '#6B6B6B',
+            'red': '#FF4E4E',
+            'transparent': 'transparent',
+            'twitter': '#1DA1F2',
+            'purple': '#8B46FF'
+        },
 
+        fontSize: {
+            'sm': '12px',
+            'base': '14px',
+            'xl': '16px',
+            '2xl': '20px',
+            '3xl': '28px',
+            '4xl': '38px',
+            '5xl': '50px',
+        },
+
+        extend: {
+            fontFamily: {
+              inter: ["'Inter'", "sans-serif"],
+              gelasio: ["'Gelasio'", "serif"]
+            },
+        },
+
+    },
+    plugins: [],
+};
