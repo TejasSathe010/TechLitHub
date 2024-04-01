@@ -8,6 +8,7 @@ import InputBox from '../components/input.component';
 import AnimationWrapper from '../common/page-animation';
 import { storeInSession } from '../common/session';
 import { UserContext } from '../App';
+import { authWithGoogle } from '../common/firebase';
 
 const UserAuthForm = ({type}) => {
     let { userAuth: { access_token }, setUserAuth } = useContext(UserContext);
@@ -44,6 +45,21 @@ const UserAuthForm = ({type}) => {
         if (!emailRegex.test(email)) { return toast.error("Email is invalid"); }
         if (!passwordRegex.test(password)) { return toast.error("Password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letter"); }
         userAuthThroughServer(serverRoute, formData);
+    }
+
+    const handleGoogleAuth = (e) => {
+        e.preventDefault();
+        authWithGoogle().then(user => {
+            let serverRoute = "/google-auth";
+            let formData = {
+                access_token: user.accessToken
+            }
+            userAuthThroughServer(serverRoute, formData);
+        })
+        .catch((err) => {
+            toast.error("Trouble login thr google");
+            return console.log(err);
+        });
     }
   return (
     access_token ? 
@@ -90,7 +106,8 @@ const UserAuthForm = ({type}) => {
                     <p>or</p>
                     <hr className='w-1/2 border-black' />
                 </div>
-                <button className='btn-dark flex items-center justify-center gap-4 w-[90%] center'>
+                <button className='btn-dark flex items-center justify-center gap-4 w-[90%] center'
+                    onClick={handleGoogleAuth}>
                     <img src={googleIcon} alt="Google" className='w-5' />
                     continue with google
                 </button>
