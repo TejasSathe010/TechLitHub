@@ -7,11 +7,10 @@ import googleIcon from '../imgs/google.png';
 import InputBox from '../components/input.component';
 import AnimationWrapper from '../common/page-animation';
 import { storeInSession } from '../common/session';
-import { userContext } from '../App';
+import { UserContext } from '../App';
 
 const UserAuthForm = ({type}) => {
-
-    let { userAuth: { access_token }, setUserAuth } = useContext(userContext);
+    let { userAuth: { access_token }, setUserAuth } = useContext(UserContext);
     const userAuthThroughServer = (serverRoute, formData) => {
         console.log(import.meta.env.VITE_SERVER_DOMAIN);
         axios.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)

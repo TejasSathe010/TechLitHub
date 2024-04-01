@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 import logo from '../imgs/logo.png';
+import { UserContext } from '../App';
+import UserNavigationPanel from './user-navigation.component';
 
 const Navbar = () => {
     const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
+    const [userNavPanel, setUserNavPanel] = useState(false);
+    
+    const { userAuth, userAuth: { access_token, profile_img } } = useContext(UserContext);
+
+    const handleUserNavPanel = () => {
+        setUserNavPanel(prevVal => !prevVal);
+    }
+
+    const handleBlur = () => {
+        setTimeout(() => {
+            setUserNavPanel(prevVal => !prevVal);
+        }, 200);
+    }
   return (
     <>
         <nav className='navbar'>
@@ -25,12 +40,31 @@ const Navbar = () => {
                     <i className="fi fi-rr-file-edit"></i>
                     <p>Write</p>
                 </Link>
-                <Link className="btn-dark py-2" to="/signin">
-                    Sign In
-                </Link>
-                <Link className="btn-light py-2 hidden md:block" to="/signup">
-                    Sign Up
-                </Link>
+                { 
+                    access_token ? 
+                    <>
+                        <Link to="/dashboard/notification">
+                            <button className='w-12 h-12 mt-1 rounded-full bg-grey relative hover:bg-black/10'>
+                                <i className="fi fi-rr-bell text-2xl block"></i>
+                            </button>
+                        </Link>
+                        <div className='relative' onClick={handleUserNavPanel} onBlur={handleBlur}>
+                            <button className='w-12 h-12 mt-1'>
+                                <img src={profile_img} alt="Profile Img" className='w-full h-full object-cover rounded-full' />
+                            </button>
+                            { userNavPanel ?  <UserNavigationPanel /> : "" }
+                        </div>
+                    </>
+                    :
+                    <>
+                        <Link className="btn-dark py-2" to="/signin">
+                            Sign In
+                        </Link>
+                        <Link className="btn-light py-2 hidden md:block" to="/signup">
+                            Sign Up
+                        </Link>
+                    </>
+                }
             </div>
         </nav>
         <Outlet />
