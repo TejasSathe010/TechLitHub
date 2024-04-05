@@ -8,6 +8,7 @@ import cors from 'cors';
 import admin from 'firebase-admin';
 import { getAuth } from 'firebase-admin/auth';
 import serviceAccountKey from "./tech-blog-site-1b8f1-firebase-adminsdk-oet75-7a39435154.json" assert { type: "json" };
+import aws from "aws-sdk";
 
 // Local Schema Imports
 import User from './Schema/User.js';
@@ -29,6 +30,25 @@ mongoose.connect(process.env.DB_LOCATION, {
     autoIndex: true
 });
 
+// Setting up s3 bucket
+const s3 = new aws.S3({
+    region: 'us-east-2',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+});
+
+const generateUploadURL = async () => {
+    const date = new Date();
+    const imageName = `${nanoid()}-${date.getTime()}.jpeg`;
+
+    return await s3.getSignedUrlPromise('putObject', {
+        Bucket: 'tech-blog-site',
+        Key: imageName,
+        Expires: 1000,
+        ContentType: "image/jpeg"
+    });
+}
+
 const formatDataToSend = (user) => {
     const access_token = jwt.sign({ id: user._id }, process.env.SECRET_ACCESS_KEY);
     return {
@@ -47,6 +67,18 @@ const generateUsername = async (email) => {
     isUsernameNotUnique ? username += nanoid().substring(0, 5): "";
     return username;
 }
+
+// upload image URL route
+server.get('/get-upload-url', (req, res) => {
+    generateUploadURL().then(url => {
+        res.status(200).json({ uploadURL: url })
+        })
+        .catch((err) => {
+            console.log(err.message);
+            return res.status(500).json({ error: err.message });
+    });
+});
+
 
 server.post("/signup", (req, res) => {
     const { fullname, email, password } = req.body;
@@ -109,7 +141,6 @@ server.post("/google-auth", async (req, res) => {
         .then((u) => { return u || null })
         .catch((err) => { return res.status(500).json({"error": err.message}) })
         if (user) { // login
-            console.log(user);
             if (!user.google_auth) {
                 return res.status(403).json({"error": "This email was signed up without google. Please log in with password to access the account"});
             }
