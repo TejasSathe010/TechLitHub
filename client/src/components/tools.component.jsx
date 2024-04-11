@@ -5,6 +5,18 @@ import Header from '@editorjs/header';
 import Quote from '@editorjs/quote';
 import Marker from '@editorjs/marker';
 import InlineCode from '@editorjs/inline-code';
+import uploadImage from '../common/aws';
+
+const uploadImageByFile = (e) => {
+    return uploadImage(e).then(url => {
+        if (url) {
+            return {
+                success: 1,
+                file: { url }
+            }
+        }
+    });
+}
 
 const uploadImageByURL = (e) => {
     let link = new Promise((resolve, reject) => {
@@ -33,6 +45,7 @@ export const tools = {
         config: {
             uploader: {
                 uploadByUrl: uploadImageByURL,
+                uploadByFile: uploadImageByFile
             }
         }
     },
