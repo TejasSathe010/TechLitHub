@@ -16,7 +16,7 @@ const BlogEditor = () => {
   useEffect(() => {
     setTextEditor(new EditorJS({
       holder: "textEditor",
-      data: '',
+      data: content,
       tools: tools,
       placeholder: 'Let\'s write an awesome story!'
     }));
@@ -49,13 +49,13 @@ const BlogEditor = () => {
 
   const handleTitleChange = (e) => {
     let input = e.target;
-    console.log(input.style.height);
-    // input.style.height = 'auto';
+    input.style.height = 'auto';
     input.style.height = input.scrollHeight + "px";
 
     setBlog({ ...blog, title: input.value });
-  }
+  };
 
+  
   const handleError = (e) => { let img = e.target; img.src = defaultBanner; };
 
   const handlePublishEvent = (e) => {
@@ -114,10 +114,8 @@ const BlogEditor = () => {
               </label>
             </div>
             <textarea
+              defaultValue={title}
               placeholder="Blog Title"
-              id=""
-              cols="30"
-              rows="10"
               className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
               onKeyDown={handleTitleKeyDown}
               onChange={handleTitleChange}
