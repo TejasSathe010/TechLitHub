@@ -11,15 +11,15 @@ import { EditorContext } from "../pages/editor.pages";
 import { tools } from "./tools.component";
 
 const BlogEditor = () => {
-  let { blog, blog: { title, banner, content, tags, des }, setBlog } = useContext(EditorContext);
+  let { blog, blog: { title, banner, content, tags, des }, setBlog, textEditor, setTextEditor, setEditorState } = useContext(EditorContext);
 
   useEffect(() => {
-    let editor = new EditorJS({
-      holder: textEditor,
+    setTextEditor(new EditorJS({
+      holder: "textEditor",
       data: '',
       tools: tools,
       placeholder: 'Let\'s write an awesome story!'
-    });
+    }));
   }, []);
 
   const handleBannerUpload = (e) => {
@@ -49,13 +49,34 @@ const BlogEditor = () => {
 
   const handleTitleChange = (e) => {
     let input = e.target;
-    input.style.height = 'auto';
+    console.log(input.style.height);
+    // input.style.height = 'auto';
     input.style.height = input.scrollHeight + "px";
 
     setBlog({ ...blog, title: input.value });
   }
 
   const handleError = (e) => { let img = e.target; img.src = defaultBanner; };
+
+  const handlePublishEvent = (e) => {
+    if (!banner.length) {
+      return toast.error("Upload a blog banner to publish it");
+    }
+    if (!title.length) {
+      return toast.error("Write blog title to publish it");
+    }
+    if (textEditor.isReady) {
+      textEditor.save().then(data => {
+        if (data.blocks.length) {
+          setBlog({ ...blog, content: data });
+          setEditorState("publish");
+        } else {
+          return toast.error("Write something in blog to publish it");
+        }
+      })
+      .catch((err) => console.log(e));
+    }
+  };
 
   return (
     <>
@@ -67,7 +88,7 @@ const BlogEditor = () => {
           { title.length ? title : "New Blog" }
           </p>
         <div className="flex gap-4 ml-auto">
-          <button className="btn-dark py-2">Publish</button>
+          <button className="btn-dark py-2" onClick={handlePublishEvent}>Publish</button>
           <button className="btn-light py-2">Save Draft</button>
         </div>
       </nav>
