@@ -185,20 +185,22 @@ server.post("/create-blog", verifyJWT, (req, res) => {
     let authorId = req.user;
     let { title, des, banner, tags, content, draft } = req.body;
     if (!title.length) {
-        return res.status(403).json({ "error": "You must provide the title to publish the blog" });
+        return res.status(403).json({ "error": "You must provide the title" });
+    } 
+    if (!draft) {
+        if (!des.length || des.length > 200) {
+            return res.status(403).json({ "error": "You must provide blog description under 200 characters" });
+        } 
+        if (!banner.length) {
+            return res.status(403).json({ "error": "You must provide blog banner to publish the blog" });
+        } 
+        if (!content.blocks.length) {
+            return res.status(403).json({ "error": "You must provide the blog content to publish the blog" });
+        } 
+        if (!tags.length || tags.length > 10) {
+            return res.status(403).json({ "error": "Provide tags inorder to publish the blog, Maximum 10" });
+        }
     }  
-    if (!des.length || des.length > 200) {
-        return res.status(403).json({ "error": "You must provide blog description under 200 characters" });
-    } 
-    if (!banner.length) {
-        return res.status(403).json({ "error": "You must provide blog banner to publish the blog" });
-    } 
-    if (!content.blocks.length) {
-        return res.status(403).json({ "error": "You must provide the blog content to publish the blog" });
-    } 
-    if (!tags.length || tags.length > 10) {
-        return res.status(403).json({ "error": "Provide tags inorder to publish the blog, Maximum 10" });
-    } 
     tags = tags.map(tag => tag.toLowerCase());
     let blog_id = title.replace(/[^a-zA-Z0-9]/g, ' ').replace(/\s+/g, "-").trim() + nanoid();
     
