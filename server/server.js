@@ -223,9 +223,14 @@ server.get('/trending-blogs', (req, res) => {
 });
 
 server.post('/search-blogs', (req, res) => {
-    let { tag, page } = req.body;
-    let findQuery = { tags: tag, draft: false };
+    let { tag, query, page } = req.body;
     let maxLimit = 5;
+    let findQuery;
+    if (tag) {
+        findQuery = { tags: tag, draft: false };
+    } else {
+        findQuery = { title: new RegExp(query, 'i'), draft: false }
+    }
 
     Blog.find(findQuery)
     .populate("author", "personal_info.profile_img personal_info.username personal_info.fullname -_id")
@@ -242,9 +247,13 @@ server.post('/search-blogs', (req, res) => {
 });
 
 server.post("/search-blogs-count", (req, res) => {
-    let { tag } = req.body;
-    let findQuery = { tags: tag, draft: false };
-    Blog.countDocuments(findQuery)
+    let { tag, query } = req.body;
+    let findQuery;
+    if (tag) {
+        findQuery = { tags: tag, draft: false };
+    } else {
+        findQuery = { title: new RegExp(query, 'i'), draft: false }
+    }    Blog.countDocuments(findQuery)
     .then(count => {
         return res.status(200).json({ totalDocs: count })
     })
