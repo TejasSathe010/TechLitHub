@@ -247,13 +247,17 @@ server.post('/search-blogs', (req, res) => {
 });
 
 server.post("/search-blogs-count", (req, res) => {
-    let { tag, query } = req.body;
+    let { tag, author, query } = req.body;
     let findQuery;
     if (tag) {
         findQuery = { tags: tag, draft: false };
-    } else {
+    } else if (query) {
         findQuery = { title: new RegExp(query, 'i'), draft: false }
-    }    Blog.countDocuments(findQuery)
+    } else if (author) {
+        findQuery = { author, draft: false }
+    }  
+    
+    Blog.countDocuments(findQuery)
     .then(count => {
         return res.status(200).json({ totalDocs: count })
     })
@@ -271,6 +275,18 @@ server.post("/search-users", (req, res) => {
         return res.status(200).json({ users })
     })
     .catch(err => {
+        return res.status(500).json({ "error": err.message });
+    })
+});
+
+server.post('/get-profile', (req, res) => {
+    let { username } = req.body;
+    User.findOne({ "personal_info.username": username })
+    .select("-personal_info.password -google_auth -updateAt -blogs")
+    .then(user => {
+        return res.status(200).json(user);
+    })
+        .catch(err => {
         return res.status(500).json({ "error": err.message });
     })
 });
