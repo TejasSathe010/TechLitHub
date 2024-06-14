@@ -22,9 +22,11 @@ const BlogEditor = () => {
     setTextEditor,
     setEditorState,
   } = useContext(EditorContext);
+
   let {
     userAuth: { access_token },
   } = useContext(UserContext);
+  
   let navigate = useNavigate();
 
   useEffect(() => {
