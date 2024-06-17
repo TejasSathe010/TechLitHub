@@ -1,13 +1,16 @@
-# Tech Blog Site
-
-Welcome to our Tech Blog Site! This is a web application developed using React and Node.js where you can read and write tech-related blogs.
+# TechLitHub.com is a scalable microservices-based blog platform developed with React, Node.js, MongoDB, AWS S3, TensorFlow, Docker, and Redis.
 
 ## Features
 
+- **Scalable Microservices Architecture**: Built with React frontend, Node.js backend, and MongoDB, enabling seamless blog management and user interaction.
+- **AWS S3 Integration**: Utilizes AWS S3 for efficient image storage, enhancing user experience with fast-loading content.
+- **TensorFlow-based AI**: Implements TensorFlow for real-time spell checking, ensuring the accuracy and professionalism of user-generated content.
+- **System Design Best Practices**: Adopts best practices in system design, leveraging Docker, Kubernetes, and Redis for CI/CD, high availability, fault tolerance, and improved system performance.
 - **User Authentication:** Users can sign up and log in securely to the platform.
 - **Create Blogs:** Authenticated users can create and publish their own tech blogs.
 - **Read Blogs:** Users can browse through a collection of tech blogs sorted by categories or search for specific topics.
 - **Responsive Design:** The site is optimized for various screen sizes, ensuring a seamless experience across devices.
+
 
 ## Technologies Used
 
@@ -15,9 +18,8 @@ Welcome to our Tech Blog Site! This is a web application developed using React a
 
 - React: A JavaScript library for building user interfaces.
 - React Router: For managing navigation within the application.
-- Redux: For managing the application state.
 - Axios: For making HTTP requests to the backend server.
-- CSS Modules: For styling components in a modular and scoped manner.
+- Tailwind.CSS: For styling components in a modular and scoped manner.
 - Responsive Design: Ensured using CSS media queries and flexible layouts.
 
 ### Backend:
@@ -26,6 +28,8 @@ Welcome to our Tech Blog Site! This is a web application developed using React a
 - Express.js: A web application framework for Node.js.
 - MongoDB: A NoSQL database for storing blog data.
 - Mongoose: An ODM (Object Data Modeling) library for MongoDB and Node.js.
+- AWS S3: Amazon service for image storage.
+
 
 ## Getting Started
 
@@ -40,6 +44,9 @@ Welcome to our Tech Blog Site! This is a web application developed using React a
     ```bash
     # Navigate to the project directory
     cd tech-blog-site
+
+    # Navigate to the server directory
+    cd server
 
     # Install backend dependencies
     npm install
@@ -64,6 +71,9 @@ Welcome to our Tech Blog Site! This is a web application developed using React a
 4. **Run the Application**:
 
     ```bash
+    # Navigate to the server directory
+    cd server
+    
     # Start the backend server
     npm start
 
@@ -71,7 +81,7 @@ Welcome to our Tech Blog Site! This is a web application developed using React a
     cd client
 
     # Start the frontend development server
-    npm start
+    npm run dev
     ```
 
 5. **Access the Application**:
