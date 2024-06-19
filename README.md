@@ -60,7 +60,7 @@
 
 3. **Set Up Environment Variables**:
 
-    Create a `.env` file in the root directory and add the following environment variables:
+    Create a `.env` file in the root directory of server and add the following environment variables:
 
     ```
     DB_Location=<your_mongodb_uri>
@@ -70,6 +70,12 @@
     AWS_SECRET_ACCESS_KEY=<your_aws_secret_access_key>
 
     AWS_ACCESS_KEY=<your_aws_access_key>
+    ```
+    
+    Create a `.env` file in the root directory of client and add the following environment variables:
+
+    ```
+    VITE_SERVER_DOMAIN=<your_server_domain>
     ```
 
 4. **Run the Application**:
