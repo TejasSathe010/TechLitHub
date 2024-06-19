@@ -63,9 +63,13 @@
     Create a `.env` file in the root directory and add the following environment variables:
 
     ```
-    PORT=5000
-    MONGODB_URI=<your_mongodb_uri>
-    JWT_SECRET=<your_jwt_secret>
+    DB_Location=<your_mongodb_uri>
+
+    SECRET_ACCESS_KEY=<your_jwt_secret>
+
+    AWS_SECRET_ACCESS_KEY=<your_aws_secret_access_key>
+
+    AWS_ACCESS_KEY=<your_aws_access_key>
     ```
 
 4. **Run the Application**:
