@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import admin from 'firebase-admin';
 import { getAuth } from 'firebase-admin/auth';
-import serviceAccountKey from "./tech-blog-site-1b8f1-firebase-adminsdk-oet75-7a39435154.json" assert { type: "json" };
+import serviceAccountKey from "./tech-blog-site-1b8f1-firebase-adminsdk-oet75-f000004a51.json" assert { type: "json" };
 import aws from "aws-sdk";
 
 // Local Schema Imports
@@ -28,9 +28,19 @@ let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for pass
 server.use(express.json());
 server.use(cors());
 
-mongoose.connect(process.env.DB_LOCATION, {
-    autoIndex: true
-});
+const MONGODB_URI = process.env.DB_LOCATION || 'mongodb+srv://tejassathe117:tejassathe117@tech-blog-site.yzt8wt1.mongodb.net/?retryWrites=true&w=majority&appName=Tech-blog-site';
+
+mongoose.connect(MONGODB_URI, {
+    autoIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+}).then(() => {
+    console.log('Connected to MongoDB');
+  }).catch((error) => {
+    console.error('Error connecting to MongoDB', error);
+  });
 
 // Setting up s3 bucket
 const s3 = new aws.S3({
@@ -386,7 +396,32 @@ server.post('/like-blog', verifyJWT, (req, res) => {
             like.save().then(Notification => {
                 return res.status(200).json({ liked_by_user: true })
             })
+        } else {
+            Notification.findOneAndDelete({ user: user_id, blog: _id, type: "like" })
+            .then(data => {
+                return res.status(200).json({ liked_by_user: false })
+            })
+            .catch(err => {
+                return res.status(500).json({ "error": err.message });
+            })
         }
+    })
+    .catch(err => {
+        return res.status(500).json({ "error": err.message });
+    })
+});
+
+server.post('/isliked-by-user', verifyJWT, (req, res) => {
+    let user_id = req.user;
+
+    let { _id } = req.body;
+
+    Notification.exists({ user: user_id, type: "like", blog: _id })
+    .then(result => {
+        return res.status(200).json({ result });
+    })
+    .catch(err => {
+        return res.status(500).json({ "error": err.message });
     })
 });
 

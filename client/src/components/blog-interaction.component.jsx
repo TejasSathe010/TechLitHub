@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from "axios";
 import { BlogContext } from '../pages/blog.page';
 import { UserContext } from '../App';
 import { Toaster, toast } from "react-hot-toast";
@@ -10,12 +11,28 @@ const BlogInteraction = () => {
 
     let { userAuth: { username, access_token } } = useContext(UserContext);
 
+    useEffect(() => {
+        if (access_token) {
+            axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/isliked-by-user", { _id }, { 
+                headers: {
+                    'Authorization': `Bearer ${ access_token }`
+                }
+             })
+            .then(async ({ data: { result } }) => { 
+                setIsLikedByUser(Boolean(result));
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
+    }, []);
+
     const handleLike = () => {
         if (access_token) {
             setIsLikedByUser(preVal => !preVal);
             !isLikedByUser ?  total_likes++ : total_likes--;
             setBlog({ ...blog, activity: {...activity, total_likes} });
-
+            console.log('Sending request')
             axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/like-blog", { _id, isLikedByUser }, { 
                 headers: {
                     'Authorization': `Bearer ${ access_token }`
