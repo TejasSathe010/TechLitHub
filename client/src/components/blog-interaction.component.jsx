@@ -7,7 +7,7 @@ import { Toaster, toast } from "react-hot-toast";
 
 
 const BlogInteraction = () => {
-    let { blog, blog: { _id, title, blog_id, activity, activity: { total_likes, total_comments }, author: { personal_info: { username: author_username } } }, setBlog, isLikedByUser, setIsLikedByUser } = useContext(BlogContext);
+    let { blog, blog: { _id, title, blog_id, activity, activity: { total_likes, total_comments }, author: { personal_info: { username: author_username } } }, setBlog, isLikedByUser, setIsLikedByUser, setCommentsWrapper } = useContext(BlogContext);
 
     let { userAuth: { username, access_token } } = useContext(UserContext);
 
@@ -62,7 +62,8 @@ const BlogInteraction = () => {
                     <p className='text-xl text-dark-grey'>{ total_likes }</p>
 
                     <button
-                    className='w-10 h-10 rounded-full flex items-center justify-center bg-grey/80'>
+                    className='w-10 h-10 rounded-full flex items-center justify-center bg-grey/80'
+                    onClick={() => setCommentsWrapper(prev => !prev)}>
                         <i className="fi fi-rr-comment-alt"></i>
                     </button>
                     <p className='text-xl text-dark-grey'>{ total_comments }</p>
