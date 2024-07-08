@@ -28,14 +28,14 @@ const BlogPage = () => {
     const [ loading, setLoading ] = useState(true);
     const [ isLikedByUser, setIsLikedByUser ] = useState(false);
     const [ commentsWrapper, setCommentsWrapper ] = useState(false);
-    const [ totalParentsCommentLoaded, setTotalParentsCommentLoaded ] = useState(0);
+    const [ totalParentCommentsLoaded, setTotalParentCommentsLoaded ] = useState(0);
 
     let { title, content, banner, author: { personal_info: { fullname, username: author_username, profile_img } }, publishedAt } = blog;
 
     const fetchBlog = () => {
         axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/get-blog", { blog_id })
         .then(async ({ data: {blog} }) => { 
-            blog.comments = await fetchComments({ blog_id: blog._id, setParentCommentCountFun: setTotalParentsCommentLoaded });
+            blog.comments = await fetchComments({ blog_id: blog._id, setParentCommentCountFun: setTotalParentCommentsLoaded });
             setBlog(blog);
             axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/search-blogs", { tag: blog.tags[0], eliminate_blog: blog_id, limit: 6 })
             .then(async ({ data }) => {     
@@ -56,7 +56,7 @@ const BlogPage = () => {
       setLoading(true);
       setIsLikedByUser(false);
       // setCommentsWrapper(false)
-      setTotalParentsCommentLoaded(0);
+      setTotalParentCommentsLoaded(0);
     }
 
     useEffect(() => {
@@ -69,7 +69,7 @@ const BlogPage = () => {
       {loading ? (
         <Loader />
       ) : (
-        <BlogContext.Provider value={{ blog, setBlog, isLikedByUser, setIsLikedByUser, commentsWrapper, setCommentsWrapper, totalParentsCommentLoaded, setTotalParentsCommentLoaded }}>
+        <BlogContext.Provider value={{ blog, setBlog, isLikedByUser, setIsLikedByUser, commentsWrapper, setCommentsWrapper, totalParentCommentsLoaded, setTotalParentCommentsLoaded }}>
           <CommentsContainer />
           <div className="max-w-[900px] center py-10 max-lg:px-[5vw]">
             <img src={banner} alt="Banner" className="aspect-video" />

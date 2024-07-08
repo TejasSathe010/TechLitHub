@@ -443,7 +443,7 @@ server.post('/add-comment', verifyJWT, (req, res) => {
 
     commentObj.save().then(commentFile => {
         let { comment, commentedAt, children } = commentFile;
-        Blog.findOneAndUpdate({_id}, { $push: { "comments": commentFile._id }, $inc: { "activity.total_comments": 1 }, "activity.total_parents_comments": 1 })
+        Blog.findOneAndUpdate({_id}, { $push: { "comments": commentFile._id }, $inc: { "activity.total_comments": 1, "activity.total_parents_comments": 1 } })
         .then(blog => {
             console.log('New comment created!')
         });
