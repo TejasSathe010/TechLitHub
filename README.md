@@ -12,6 +12,9 @@
 - **Responsive Design:** The site is optimized for various screen sizes, ensuring a seamless experience across devices.
 
 
+![Demo of project features](https://github.com/TejasSathe010/TechLitHub/blob/main/TechLitHub.gif)
+
+
 ## Technologies Used
 
 ### Frontend:
