@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import admin from 'firebase-admin';
 import { getAuth } from 'firebase-admin/auth';
-import serviceAccountKey from "./tech-blog-site-1b8f1-firebase-adminsdk-oet75-f000004a51.json" assert { type: "json" };
+import fs from 'fs';
 import aws from "aws-sdk";
 
 // Local Schema Imports
@@ -21,6 +21,9 @@ import { populate } from 'dotenv';
 const server = express();
 let PORT = 3000;
 
+const serviceAccountKey = JSON.parse(
+    fs.readFileSync(new URL('./tech-blog-site-1b8f1-firebase-adminsdk-oet75-f000004a51.json', import.meta.url), 'utf-8')
+  );
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccountKey)
 });
