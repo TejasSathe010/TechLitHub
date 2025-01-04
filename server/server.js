@@ -198,6 +198,14 @@ server.post("/google-auth", async (req, res) => {
     })
 });
 
+server.post('/change-password', verifyJWT, (req, res) => {
+    let { currentPassword, newPassword } = req.body;
+
+    if (!passwordRegex.test(currentPassword) || !passwordRegex.test(newPassword)) {
+        return toast.error("Password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letter");
+    }
+});
+
 server.post('/latest-blogs', (req, res) => {
     let {page} = req.body;
     let maxLimit = 5;
