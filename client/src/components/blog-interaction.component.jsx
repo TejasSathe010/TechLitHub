@@ -13,7 +13,7 @@ const BlogInteraction = () => {
 
     useEffect(() => {
         if (access_token) {
-            axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/isliked-by-user", { _id }, { 
+            axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/blog/isliked-by-user", { _id }, { 
                 headers: {
                     'Authorization': `Bearer ${ access_token }`
                 }
@@ -33,7 +33,7 @@ const BlogInteraction = () => {
             !isLikedByUser ?  total_likes++ : total_likes--;
             setBlog({ ...blog, activity: {...activity, total_likes} });
             console.log('Sending request')
-            axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/like-blog", { _id, isLikedByUser }, { 
+            axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/blog/like-blog", { _id, isLikedByUser }, { 
                 headers: {
                     'Authorization': `Bearer ${ access_token }`
                 }

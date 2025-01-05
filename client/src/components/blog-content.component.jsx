@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/vs2015.css';
+import 'highlight.js/styles/nord.css';
 
 const Img = ({ url, caption }) => (
     <div>
@@ -18,13 +18,30 @@ const Quote = ({ quote, caption }) => (
     </div>
 );
 
-const List = ({ style, items }) => (
-    <ol className={`pl-5 ${style === 'ordered' ? 'list-decimal' : 'list-disc'}`}>
-        {items.map((listItem, i) => (
-            <li key={i} className="my-4" dangerouslySetInnerHTML={{ __html: listItem }}></li>
-        ))}
-    </ol>
-);
+const List = ({ style, items }) => {
+    console.log('Items:', items); // Log items to check structure
+    return (
+        <ol className={`pl-5 ${style === "ordered" ? "list-decimal" : "list-disc"}`}>
+            {items.map((listItem, i) => (
+                <li key={i} className="my-4">
+                    {typeof listItem === 'string' ? (
+                        listItem
+                    ) : (
+                        <div>
+                            {listItem.content && (
+                                <div dangerouslySetInnerHTML={{ __html: listItem.content }}></div>
+                            )}
+                            {listItem.items && listItem.items.length > 0 && (
+                                <List style={listItem.style} items={listItem.items} />
+                            )}
+                        </div>
+                    )}
+                </li>
+            ))}
+        </ol>
+    );
+};
+
 
 const Checklist = ({ items }) => (
     <ul className="pl-5 list-none">
@@ -119,11 +136,11 @@ const BlogContent = ({ block }) => {
 
     if (type === 'code') {
         return (
-            <pre className="bg-gray-900 text-white rounded-md p-4 text-xs overflow-auto">
-                <code className="hljs italic">{data.code}</code>
+            <pre>
+                <code className="hljs">{data.code}</code>
             </pre>
         );
-    }
+    }    
 
     if (type === 'raw') {
         return <div dangerouslySetInnerHTML={{ __html: data.html }}></div>;

@@ -26,7 +26,7 @@ const UserAuthForm = ({type}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let serverRoute = type == "sign-in" ? "/signin" : "/signup";
+        let serverRoute = type == "sign-in" ? "/auth/signin" : "/auth/signup";
         let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
         let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 
@@ -50,7 +50,7 @@ const UserAuthForm = ({type}) => {
     const handleGoogleAuth = (e) => {
         e.preventDefault();
         authWithGoogle().then(user => {
-            let serverRoute = "/google-auth";
+            let serverRoute = "/auth/google-auth";
             let formData = {
                 access_token: user.accessToken
             }

@@ -33,11 +33,11 @@ const BlogPage = () => {
     let { title, content, banner, author: { personal_info: { fullname, username: author_username, profile_img } }, publishedAt } = blog;
 
     const fetchBlog = () => {
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/get-blog", { blog_id })
+        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/blog/get-blog", { blog_id })
         .then(async ({ data: {blog} }) => { 
             blog.comments = await fetchComments({ blog_id: blog._id, setParentCommentCountFun: setTotalParentCommentsLoaded });
             setBlog(blog);
-            axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/search-blogs", { tag: blog.tags[0], eliminate_blog: blog_id, limit: 6 })
+            axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/blog/search-blogs", { tag: blog.tags[0], eliminate_blog: blog_id, limit: 6 })
             .then(async ({ data }) => {     
                 console.log(blog.tags);
                 setSimilarBlogs(data.blogs);

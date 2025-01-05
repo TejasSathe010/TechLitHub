@@ -42,7 +42,7 @@ const ProfilePage = () => {
     let { userAuth: { username }} = useContext(UserContext);
 
     const fetchUserProfile = () => {
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/get-profile", { username: profileId })
+        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/auth/get-profile", { username: profileId })
         .then(({ data: user }) => {
             if (user !== null) {
                 setProfile(user);
@@ -59,13 +59,13 @@ const ProfilePage = () => {
 
     const getBlogs = ({ page = 1, user_id }) => {
         user_id = user_id === undefined ? blogs.user_id : user_id;
-        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/search-blogs", { author: user_id, page })
+        axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/blog/search-blogs", { author: user_id, page })
         .then( async ({ data }) => {
             let formateData = await filterPaginationData({
                 state: blogs,
                 data: data.blogs,
                 page,
-                countRoute: "/search-blogs-count",
+                countRoute: "/blog/search-blogs-count",
                 dataToSend: { author: user_id }
               })
             formateData.user_id = user_id;
