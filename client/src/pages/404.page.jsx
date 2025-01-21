@@ -1,6 +1,6 @@
 import React from 'react';
 import pageNotFoundImage from '../imgs/404.png'
-import fullLogo from '../imgs/full-logo.png'
+import fullLogo from '../imgs/logo.png'
 import { Link } from 'react-router-dom';
 
 const PageNotFound = () => {
@@ -10,7 +10,7 @@ const PageNotFound = () => {
         <h1 className='text-4xl font-gelasio leading-7'>Page not found!</h1>
         <p className='text-dark-grey text-xl leading-7 -mt-8'>The page you are looking for does not exists. Head back to the <Link to="/" className='text-black underline'>home page</Link>.</p>
         <div className='mt-auto'>
-            <img src={fullLogo} alt="Full logo" className='h-8 object-contain block mx-auto select-none' />
+            <img src={fullLogo} alt="Full logo" className='h-20 object-contain block mx-auto select-none' />
             <p className='mt-5 text-dark-grey'>Read milions of stories around the world</p>
         </div>
     </section>
