@@ -1,4 +1,5 @@
-# TechLitHub.com is a scalable microservices-based blog platform developed with React, Node.js, MongoDB, AWS S3, EC2, Nginx, TensorFlow, Docker, and Redis. A platform enabling users to create technical blogs, summaries, and share insights from the technical books they've explored.
+# TechLitHub.com 
+## is a scalable microservices-based blog platform developed with React, Node.js, MongoDB, AWS S3, EC2, Nginx, TensorFlow, Docker, and Redis. A platform enabling users to create technical blogs, summaries, and share insights from the technical books they've explored.
 
 Link to Deployed Site: https://techlithub.netlify.app/
 
